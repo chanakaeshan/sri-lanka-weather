@@ -101,7 +101,7 @@ const WeatherApp = () => {
     }
   };
 
-  const getBackgroundGradient = (condition) => {
+  const getBackgroundGradient = (condition: string) => {
     switch (condition) {
       case 'sunny': return 'from-blue-400 via-blue-500 to-yellow-400';
       case 'cloudy': return 'from-gray-400 via-gray-500 to-gray-600';
