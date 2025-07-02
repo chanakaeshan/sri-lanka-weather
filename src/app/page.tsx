@@ -91,7 +91,7 @@ const WeatherApp = () => {
     fetchWeather(selectedCity);
   }, [selectedCity]);
 
-  const getWeatherIcon = (condition) => {
+  const getWeatherIcon = (condition: string) => {
     switch (condition) {
       case 'sunny': return <Sun className="w-16 h-16 text-yellow-400" />;
       case 'cloudy': return <Cloud className="w-16 h-16 text-gray-400" />;
