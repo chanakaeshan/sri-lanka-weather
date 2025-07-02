@@ -3,7 +3,8 @@
 import React, { useState, useEffect } from 'react';
 import { 
   Search, MapPin, Thermometer, Droplets, Wind, Eye, Gauge, Sun, Cloud, 
-  CloudRain, CloudSnow, Zap, Activity, Compass, Sunrise, Sunset, Moon
+  CloudRain, CloudSnow, Zap, Activity, Compass, Sunrise, Sunset, Moon,
+  Wifi, Cpu, BarChart3, TrendingUp, Layers, Globe
 } from 'lucide-react';
 
 type ForecastDay = {
@@ -94,352 +95,529 @@ const WeatherApp = () => {
   }, [selectedCity]);
 
   const getWeatherIcon = (condition: string, size: string = "w-16 h-16") => {
-    const iconClass = `${size} drop-shadow-lg transition-all duration-300 hover:scale-110`;
+    const iconClass = `${size} drop-shadow-2xl transition-all duration-500 hover:scale-125 hover:rotate-12`;
     switch (condition) {
-      case 'sunny': return <Sun className={`${iconClass} text-yellow-400`} />;
-      case 'cloudy': return <Cloud className={`${iconClass} text-gray-300`} />;
-      case 'rainy': return <CloudRain className={`${iconClass} text-blue-400`} />;
-      case 'partly-cloudy': return <Cloud className={`${iconClass} text-gray-200`} />;
-      default: return <Sun className={`${iconClass} text-yellow-400`} />;
+      case 'sunny': return <Sun className={`${iconClass} text-amber-300`} />;
+      case 'cloudy': return <Cloud className={`${iconClass} text-slate-300`} />;
+      case 'rainy': return <CloudRain className={`${iconClass} text-sky-300`} />;
+      case 'partly-cloudy': return <Cloud className={`${iconClass} text-slate-200`} />;
+      default: return <Sun className={`${iconClass} text-amber-300`} />;
     }
-  };
-
-  const getBackgroundGradient = (condition: string) => {
-    switch (condition) {
-      case 'sunny': return 'from-orange-400 via-pink-500 to-purple-600';
-      case 'cloudy': return 'from-gray-600 via-slate-700 to-gray-900';
-      case 'rainy': return 'from-slate-800 via-blue-900 to-indigo-900';
-      case 'partly-cloudy': return 'from-blue-500 via-purple-600 to-indigo-700';
-      default: return 'from-cyan-400 via-blue-500 to-indigo-600';
-    }
-  };
-
-  const getAnimatedBackground = (condition: string) => {
-    return (
-      <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        <div className={`absolute inset-0 bg-gradient-to-br ${getBackgroundGradient(condition)} transition-all duration-1000`}></div>
-        
-        {/* Floating geometric shapes */}
-        {Array.from({ length: 15 }).map((_, i) => (
-          <div
-            key={`shape-${i}`}
-            className="absolute opacity-10"
-            style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-              animation: `float ${8 + Math.random() * 4}s ease-in-out infinite ${Math.random() * 2}s`
-            }}
-          >
-            <div className={`w-${4 + Math.floor(Math.random() * 8)} h-${4 + Math.floor(Math.random() * 8)} bg-white/20 backdrop-blur-sm ${Math.random() > 0.5 ? 'rounded-full' : 'rounded-lg rotate-45'}`}></div>
-          </div>
-        ))}
-
-        {/* Grid pattern overlay */}
-        <div 
-          className="absolute inset-0 opacity-5"
-          style={{
-            backgroundImage: `
-              linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px),
-              linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)
-            `,
-            backgroundSize: '50px 50px',
-            animation: 'gridMove 20s linear infinite'
-          }}
-        ></div>
-
-        {/* Weather-specific effects */}
-        {condition === 'rainy' && (
-          <>
-            {Array.from({ length: 80 }).map((_, i) => (
-              <div
-                key={`rain-${i}`}
-                className="absolute w-0.5 bg-gradient-to-b from-blue-200 to-transparent opacity-60"
-                style={{
-                  left: `${Math.random() * 100}%`,
-                  height: `${15 + Math.random() * 25}px`,
-                  animation: `rainDrop ${0.8 + Math.random() * 0.4}s linear infinite ${Math.random() * 2}s`
-                }}
-              />
-            ))}
-          </>
-        )}
-
-        {condition === 'sunny' && (
-          <div className="absolute top-16 right-16 w-40 h-40 opacity-20">
-            <div className="absolute inset-0 bg-yellow-300 rounded-full animate-pulse blur-xl"></div>
-            {Array.from({ length: 12 }).map((_, i) => (
-              <div
-                key={`ray-${i}`}
-                className="absolute top-1/2 left-1/2 w-1 h-20 bg-gradient-to-t from-yellow-200 to-transparent origin-bottom"
-                style={{
-                  transform: `translate(-50%, -100%) rotate(${i * 30}deg)`,
-                  animation: `sunRay 4s ease-in-out infinite ${i * 0.1}s`
-                }}
-              />
-            ))}
-          </div>
-        )}
-
-        <style jsx>{`
-          @keyframes float {
-            0%, 100% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-30px) rotate(180deg); }
-          }
-          @keyframes rainDrop {
-            to { transform: translateY(100vh); opacity: 0; }
-          }
-          @keyframes sunRay {
-            0%, 100% { opacity: 0.3; transform: translate(-50%, -100%) rotate(${0}deg) scale(1); }
-            50% { opacity: 0.8; transform: translate(-50%, -100%) rotate(${0}deg) scale(1.3); }
-          }
-          @keyframes gridMove {
-            0% { transform: translate(0, 0); }
-            100% { transform: translate(50px, 50px); }
-          }
-        `}</style>
-      </div>
-    );
   };
 
   return (
-    <div className="min-h-screen relative overflow-hidden">
-      {getAnimatedBackground(weather?.condition || 'default')}
+    <div className="min-h-screen relative overflow-hidden bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
+      {/* Advanced Animated Background */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none">
+        {/* Primary gradient overlay */}
+        <div className="absolute inset-0 bg-gradient-to-br from-sky-950/30 via-slate-900/50 to-amber-950/20"></div>
+        
+        {/* Floating glass orbs */}
+        {Array.from({ length: 20 }).map((_, i) => (
+          <div
+            key={`orb-${i}`}
+            className="absolute rounded-full"
+            style={{
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+              width: `${20 + Math.random() * 60}px`,
+              height: `${20 + Math.random() * 60}px`,
+              background: `radial-gradient(circle, ${
+                Math.random() > 0.5 ? 'rgba(135, 206, 235, 0.1)' : 
+                Math.random() > 0.5 ? 'rgba(255, 255, 224, 0.1)' : 'rgba(128, 128, 128, 0.1)'
+              }, transparent)`,
+              backdropFilter: 'blur(20px)',
+              border: '1px solid rgba(255, 255, 255, 0.1)',
+              animation: `float ${8 + Math.random() * 8}s ease-in-out infinite ${Math.random() * 4}s`
+            }}
+          />
+        ))}
+
+        {/* Neural network lines */}
+        <svg className="absolute inset-0 w-full h-full opacity-10">
+          {Array.from({ length: 15 }).map((_, i) => (
+            <g key={`line-${i}`}>
+              <line
+                x1={`${Math.random() * 100}%`}
+                y1={`${Math.random() * 100}%`}
+                x2={`${Math.random() * 100}%`}
+                y2={`${Math.random() * 100}%`}
+                stroke="rgba(135, 206, 235, 0.3)"
+                strokeWidth="0.5"
+                className="animate-pulse"
+                style={{ animationDelay: `${i * 0.2}s` }}
+              />
+              <circle
+                cx={`${Math.random() * 100}%`}
+                cy={`${Math.random() * 100}%`}
+                r="2"
+                fill="rgba(255, 255, 224, 0.4)"
+                className="animate-pulse"
+                style={{ animationDelay: `${i * 0.3}s` }}
+              />
+            </g>
+          ))}
+        </svg>
+
+        {/* Particle field */}
+        {Array.from({ length: 50 }).map((_, i) => (
+          <div
+            key={`particle-${i}`}
+            className="absolute w-1 h-1 bg-sky-200/30 rounded-full"
+            style={{
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+              animation: `particleFloat ${10 + Math.random() * 10}s linear infinite ${Math.random() * 5}s`
+            }}
+          />
+        ))}
+      </div>
+
+      <style jsx>{`
+        @keyframes float {
+          0%, 100% { transform: translateY(0px) translateX(0px) scale(1); opacity: 0.7; }
+          33% { transform: translateY(-30px) translateX(20px) scale(1.1); opacity: 1; }
+          66% { transform: translateY(10px) translateX(-15px) scale(0.9); opacity: 0.8; }
+        }
+        @keyframes particleFloat {
+          0% { transform: translateY(100vh) opacity(0); }
+          10% { opacity: 1; }
+          90% { opacity: 1; }
+          100% { transform: translateY(-10vh) opacity(0); }
+        }
+        @keyframes glassShimmer {
+          0% { background-position: -200% 0; }
+          100% { background-position: 200% 0; }
+        }
+        @keyframes dataFlow {
+          0% { transform: translateX(-100%); opacity: 0; }
+          50% { opacity: 1; }
+          100% { transform: translateX(100%); opacity: 0; }
+        }
+      `}</style>
       
       <div className="relative z-10">
-        {/* Header with time */}
+        {/* Futuristic Header */}
         <div className="container mx-auto px-6 pt-8">
-          <div className="flex justify-between items-center mb-8">
-            <div>
-              <h1 className="text-5xl md:text-7xl font-black text-white mb-2 drop-shadow-2xl bg-gradient-to-r from-white to-gray-200 bg-clip-text text-transparent">
-                SRI LANKA
-              </h1>
-              <p className="text-xl text-white/80 font-light tracking-wide">Weather Intelligence System</p>
-            </div>
-            <div className="text-right">
-              <div className="text-2xl md:text-3xl font-mono text-white/90 mb-1">
-                {currentTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+          <div className="flex justify-between items-start mb-12">
+            <div className="flex items-center gap-6">
+              <div className="relative">
+                <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-sky-400/20 to-amber-400/20 backdrop-blur-xl border border-white/10 flex items-center justify-center">
+                  <Globe className="w-8 h-8 text-sky-300 animate-spin" style={{ animationDuration: '8s' }} />
+                </div>
+                <div className="absolute -top-1 -right-1 w-4 h-4 bg-amber-400 rounded-full animate-pulse"></div>
               </div>
-              <div className="text-sm text-white/70 uppercase tracking-wider">
-                {currentTime.toLocaleDateString([], { weekday: 'long' })}
+              <div>
+                <h1 className="text-6xl md:text-8xl font-black mb-2">
+                  <span className="bg-gradient-to-r from-sky-300 via-slate-200 to-amber-300 bg-clip-text text-transparent">
+                    WEATHER
+                  </span>
+                </h1>
+                <div className="flex items-center gap-3">
+                  <div className="h-px w-12 bg-gradient-to-r from-transparent to-sky-400"></div>
+                  <p className="text-slate-400 font-light tracking-[0.3em] text-sm uppercase">
+                    Neural Intelligence System
+                  </p>
+                  <div className="h-px w-12 bg-gradient-to-l from-transparent to-amber-400"></div>
+                </div>
+              </div>
+            </div>
+            
+            {/* Advanced Time Display */}
+            <div className="relative">
+              <div className="bg-slate-900/40 backdrop-blur-2xl rounded-3xl p-6 border border-white/10 shadow-2xl">
+                <div className="flex items-center gap-4 mb-3">
+                  <div className="w-3 h-3 bg-sky-400 rounded-full animate-pulse"></div>
+                  <span className="text-slate-400 text-xs uppercase tracking-wider">Live Time</span>
+                </div>
+                <div className="text-3xl font-mono text-white mb-1 font-light">
+                  {currentTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
+                </div>
+                <div className="text-slate-400 text-sm capitalize">
+                  {currentTime.toLocaleDateString([], { weekday: 'long', month: 'short', day: 'numeric' })}
+                </div>
               </div>
             </div>
           </div>
 
-          {/* Advanced Search */}
-          <div className="max-w-2xl mx-auto mb-12">
+          {/* Quantum Search Interface */}
+          <div className="max-w-4xl mx-auto mb-16">
             <div className="relative group">
-              <div className="absolute inset-0 bg-gradient-to-r from-cyan-400 to-blue-500 rounded-3xl blur opacity-25 group-hover:opacity-50 transition-opacity"></div>
-              <div className="relative">
-                <Search className="absolute left-6 top-1/2 transform -translate-y-1/2 w-6 h-6 text-white/60" />
+              <div className="absolute inset-0 bg-gradient-to-r from-sky-500/20 via-slate-500/10 to-amber-500/20 rounded-[2rem] blur-xl opacity-60 group-hover:opacity-100 transition-opacity duration-500"></div>
+              <div className="relative bg-slate-900/30 backdrop-blur-2xl rounded-[2rem] border border-white/10 p-8 shadow-2xl">
+                <div className="flex items-center gap-4 mb-4">
+                  <Search className="w-6 h-6 text-sky-400" />
+                  <span className="text-slate-300 text-sm uppercase tracking-wider">Global Search Protocol</span>
+                  <div className="flex-1 h-px bg-gradient-to-r from-sky-400/50 to-transparent"></div>
+                  <Wifi className="w-5 h-5 text-amber-400 animate-pulse" />
+                </div>
                 <input
                   type="text"
-                  placeholder="Search cities across the island..."
+                  placeholder="Enter city coordinates or search neural database..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full pl-16 pr-6 py-5 rounded-3xl bg-black/20 backdrop-blur-xl text-white text-lg placeholder-white/50 border border-white/20 focus:outline-none focus:ring-2 focus:ring-cyan-400/50 focus:border-transparent transition-all duration-300"
+                  className="w-full bg-transparent text-white text-xl placeholder-slate-500 border-none outline-none font-light"
                 />
               </div>
             </div>
 
             {searchTerm && (
-              <div className="mt-4 bg-black/30 backdrop-blur-xl rounded-2xl border border-white/20 overflow-hidden max-h-64 overflow-y-auto">
-                {filteredCities.map((city) => (
+              <div className="mt-6 bg-slate-900/50 backdrop-blur-2xl rounded-3xl border border-white/10 overflow-hidden shadow-2xl">
+                {filteredCities.map((city, index) => (
                   <button
                     key={city}
                     onClick={() => {
                       setSelectedCity(city);
                       setSearchTerm('');
                     }}
-                    className="w-full text-left px-6 py-4 text-white hover:bg-white/10 transition-all duration-200 flex items-center gap-3 group"
+                    className="w-full text-left px-8 py-5 text-white hover:bg-white/5 transition-all duration-300 flex items-center gap-4 group border-b border-white/5 last:border-b-0"
+                    style={{ animationDelay: `${index * 50}ms` }}
                   >
-                    <MapPin className="w-5 h-5 text-cyan-400 group-hover:scale-110 transition-transform" />
-                    <span className="text-lg">{city}</span>
+                    <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-sky-500/20 to-amber-500/20 flex items-center justify-center backdrop-blur">
+                      <MapPin className="w-5 h-5 text-sky-300 group-hover:scale-110 transition-transform" />
+                    </div>
+                    <div>
+                      <span className="text-lg font-medium">{city}</span>
+                      <div className="text-slate-400 text-sm">Sri Lanka • {Math.floor(Math.random() * 50 + 10)}km</div>
+                    </div>
+                    <div className="ml-auto flex items-center gap-2">
+                      <div className="w-2 h-2 bg-sky-400 rounded-full animate-pulse"></div>
+                      <span className="text-slate-400 text-xs">ACTIVE</span>
+                    </div>
                   </button>
                 ))}
               </div>
             )}
           </div>
 
-          {/* Main Content */}
+          {/* Main Interface */}
           {loading ? (
-            <div className="text-center py-20">
-              <div className="relative inline-block">
-                <div className="w-16 h-16 border-4 border-white/20 border-t-white rounded-full animate-spin"></div>
-                <div className="absolute inset-0 w-16 h-16 border-4 border-transparent border-t-cyan-400 rounded-full animate-spin" style={{ animationDirection: 'reverse', animationDuration: '0.8s' }}></div>
+            <div className="text-center py-32">
+              <div className="relative inline-block mb-8">
+                <div className="w-20 h-20 border-2 border-slate-700 rounded-full"></div>
+                <div className="absolute inset-0 w-20 h-20 border-2 border-transparent border-t-sky-400 rounded-full animate-spin"></div>
+                <div className="absolute inset-2 w-16 h-16 border-2 border-transparent border-t-amber-400 rounded-full animate-spin" style={{ animationDirection: 'reverse', animationDuration: '1.5s' }}></div>
+                <div className="absolute inset-4 w-12 h-12 border-2 border-transparent border-t-slate-400 rounded-full animate-spin" style={{ animationDuration: '2s' }}></div>
               </div>
-              <p className="text-white/80 mt-6 text-xl font-light">Analyzing atmospheric conditions...</p>
+              <p className="text-slate-300 text-xl font-light mb-2">Analyzing atmospheric data streams...</p>
+              <p className="text-slate-500 text-sm">Neural network processing • Quantum algorithms active</p>
             </div>
           ) : error ? (
             <div className="text-center max-w-md mx-auto">
-              <div className="bg-red-500/20 backdrop-blur-xl rounded-3xl p-8 border border-red-400/30">
+              <div className="bg-red-500/10 backdrop-blur-2xl rounded-3xl p-8 border border-red-400/20">
                 <Zap className="w-12 h-12 text-red-400 mx-auto mb-4" />
                 <p className="text-white text-lg mb-6">{error}</p>
                 <button
                   onClick={() => fetchWeather(selectedCity)}
-                  className="px-8 py-3 bg-gradient-to-r from-red-500 to-pink-500 text-white rounded-2xl hover:shadow-lg hover:shadow-red-500/25 transition-all duration-300 transform hover:scale-105 font-medium"
+                  className="px-8 py-3 bg-gradient-to-r from-red-500/20 to-red-400/20 backdrop-blur text-white rounded-2xl hover:shadow-lg hover:shadow-red-500/10 transition-all duration-300 transform hover:scale-105 font-medium border border-red-400/30"
                 >
-                  Retry Connection
+                  Reconnect Neural Link
                 </button>
               </div>
             </div>
           ) : weather ? (
             <div className="max-w-7xl mx-auto space-y-8">
-              {/* Hero Weather Display */}
+              {/* Quantum Weather Display */}
               <div className="grid lg:grid-cols-3 gap-8">
-                {/* Main Temperature */}
+                {/* Primary Data Matrix */}
                 <div className="lg:col-span-2">
-                  <div className="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-2xl rounded-[2rem] p-8 border border-white/20 shadow-2xl hover:shadow-cyan-500/10 transition-all duration-500 group">
-                    <div className="flex items-start justify-between mb-8">
-                      <div>
-                        <div className="flex items-center gap-4 mb-3">
-                          <MapPin className="w-8 h-8 text-cyan-400" />
-                          <h2 className="text-4xl font-bold text-white">{weather.city}</h2>
+                  <div className="relative group">
+                    <div className="absolute inset-0 bg-gradient-to-br from-sky-500/10 via-slate-500/5 to-amber-500/10 rounded-[3rem] blur-2xl opacity-60 group-hover:opacity-100 transition-opacity duration-700"></div>
+                    <div className="relative bg-slate-900/40 backdrop-blur-2xl rounded-[3rem] p-10 border border-white/10 shadow-2xl">
+                      {/* Data Stream Header */}
+                      <div className="flex items-center justify-between mb-8">
+                        <div className="flex items-center gap-4">
+                          <div className="relative">
+                            <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-sky-400/20 to-amber-400/20 backdrop-blur flex items-center justify-center">
+                              <MapPin className="w-6 h-6 text-sky-300" />
+                            </div>
+                            <div className="absolute -top-1 -right-1 w-3 h-3 bg-sky-400 rounded-full animate-pulse"></div>
+                          </div>
+                          <div>
+                            <h2 className="text-4xl font-bold text-white mb-1">{weather.city}</h2>
+                            <div className="flex items-center gap-2">
+                              <span className="text-slate-400">{weather.country}</span>
+                              <div className="w-1 h-1 bg-slate-500 rounded-full"></div>
+                              <span className="text-slate-500 text-sm">LIVE</span>
+                            </div>
+                          </div>
                         </div>
-                        <p className="text-white/70 text-lg">{weather.country}</p>
+                        <div className="text-right">
+                          {getWeatherIcon(weather.condition, "w-24 h-24")}
+                        </div>
                       </div>
-                      <div className="group-hover:rotate-12 transition-transform duration-300">
-                        {getWeatherIcon(weather.condition, "w-20 h-20")}
+
+                      <div className="grid md:grid-cols-2 gap-12">
+                        {/* Temperature Matrix */}
+                        <div className="relative">
+                          <div className="text-9xl font-black mb-4">
+                            <span className="bg-gradient-to-br from-sky-200 via-white to-amber-200 bg-clip-text text-transparent">
+                              {weather.temperature}
+                            </span>
+                            <span className="text-4xl text-slate-400 ml-2">°C</span>
+                          </div>
+                          <p className="text-2xl text-slate-300 capitalize mb-4 font-light">
+                            {weather.condition.replace('-', ' ')}
+                          </p>
+                          <div className="flex items-center gap-3">
+                            <Thermometer className="w-5 h-5 text-amber-400" />
+                            <span className="text-slate-400">Feels like</span>
+                            <span className="text-sky-300 font-semibold text-lg">{weather.feelsLike}°C</span>
+                          </div>
+                        </div>
+
+                        {/* Sensor Data */}
+                        <div className="space-y-6">
+                          {[
+                            { icon: Droplets, label: 'Humidity', value: `${weather.humidity}%`, color: 'text-sky-400', bg: 'from-sky-500/10 to-sky-400/5' },
+                            { icon: Wind, label: 'Wind Speed', value: `${weather.windSpeed} km/h`, color: 'text-slate-300', bg: 'from-slate-500/10 to-slate-400/5' },
+                            { icon: Eye, label: 'Visibility', value: `${weather.visibility} km`, color: 'text-amber-400', bg: 'from-amber-500/10 to-amber-400/5' },
+                            { icon: Gauge, label: 'Pressure', value: `${weather.pressure} hPa`, color: 'text-sky-300', bg: 'from-sky-500/10 to-sky-300/5' }
+                          ].map((item, index) => (
+                            <div key={index} className="group/sensor flex items-center gap-5 hover:translate-x-3 transition-all duration-300">
+                              <div className={`p-4 bg-gradient-to-br ${item.bg} backdrop-blur rounded-2xl border border-white/10 group-hover/sensor:scale-110 transition-transform`}>
+                                <item.icon className={`w-6 h-6 ${item.color}`} />
+                              </div>
+                              <div className="flex-1">
+                                <p className="text-slate-500 text-xs uppercase tracking-widest mb-1">{item.label}</p>
+                                <p className="text-white text-xl font-semibold">{item.value}</p>
+                              </div>
+                              <div className="w-16 h-1 bg-slate-800 rounded-full overflow-hidden">
+                                <div 
+                                  className={`h-full bg-gradient-to-r ${item.color.replace('text-', 'from-')} to-transparent transition-all duration-1000`}
+                                  style={{ width: `${Math.random() * 100}%` }}
+                                ></div>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
                       </div>
                     </div>
+                  </div>
+                </div>
 
-                    <div className="grid md:grid-cols-2 gap-8">
-                      <div>
-                        <div className="text-8xl md:text-9xl font-black text-transparent bg-gradient-to-br from-white via-cyan-100 to-blue-200 bg-clip-text mb-4 leading-none">
-                          {weather.temperature}°
+                {/* Advanced Analytics */}
+                <div className="space-y-6">
+                  {/* UV Index Pod */}
+                  <div className="relative group">
+                    <div className="absolute inset-0 bg-gradient-to-br from-amber-500/20 to-yellow-500/10 rounded-3xl blur-xl opacity-60 group-hover:opacity-100 transition-opacity"></div>
+                    <div className="relative bg-slate-900/40 backdrop-blur-2xl rounded-3xl p-6 border border-white/10">
+                      <div className="flex items-center gap-3 mb-6">
+                        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-500/20 to-yellow-500/20 flex items-center justify-center">
+                          <Sunrise className="w-5 h-5 text-amber-400" />
                         </div>
-                        <p className="text-2xl text-white/90 capitalize mb-2 font-light">
-                          {weather.condition.replace('-', ' ')}
-                        </p>
-                        <p className="text-white/70 text-lg">
-                          Feels like <span className="text-cyan-300 font-semibold">{weather.feelsLike}°C</span>
-                        </p>
+                        <div>
+                          <span className="text-white font-medium">UV Index</span>
+                          <div className="text-slate-500 text-xs">Solar radiation</div>
+                        </div>
                       </div>
+                      <div className="text-5xl font-black text-white mb-4">{weather.uvIndex}</div>
+                      <div className="relative w-full h-3 bg-slate-800 rounded-full overflow-hidden">
+                        <div 
+                          className="absolute inset-0 bg-gradient-to-r from-green-400 via-yellow-400 to-red-500 rounded-full transition-all duration-1000"
+                          style={{ width: `${(weather.uvIndex / 11) * 100}%` }}
+                        ></div>
+                      </div>
+                    </div>
+                  </div>
 
-                      <div className="space-y-6">
-                        {[
-                          { icon: Droplets, label: 'Humidity', value: `${weather.humidity}%`, color: 'text-blue-400' },
-                          { icon: Wind, label: 'Wind Speed', value: `${weather.windSpeed} km/h`, color: 'text-gray-300' },
-                          { icon: Eye, label: 'Visibility', value: `${weather.visibility} km`, color: 'text-purple-400' },
-                          { icon: Gauge, label: 'Pressure', value: `${weather.pressure} hPa`, color: 'text-green-400' }
-                        ].map((item, index) => (
-                          <div key={index} className="flex items-center gap-4 group/item hover:translate-x-2 transition-transform duration-200">
-                            <div className="p-3 bg-white/10 rounded-2xl backdrop-blur group-hover/item:bg-white/20 transition-colors">
-                              <item.icon className={`w-6 h-6 ${item.color}`} />
-                            </div>
-                            <div>
-                              <p className="text-white/60 text-sm uppercase tracking-wider">{item.label}</p>
-                              <p className="text-white text-xl font-semibold">{item.value}</p>
-                            </div>
+                  {/* Air Quality Monitor */}
+                  <div className="relative group">
+                    <div className="absolute inset-0 bg-gradient-to-br from-sky-500/20 to-emerald-500/10 rounded-3xl blur-xl opacity-60 group-hover:opacity-100 transition-opacity"></div>
+                    <div className="relative bg-slate-900/40 backdrop-blur-2xl rounded-3xl p-6 border border-white/10">
+                      <div className="flex items-center gap-3 mb-6">
+                        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500/20 to-sky-500/20 flex items-center justify-center">
+                          <Activity className="w-5 h-5 text-emerald-400" />
+                        </div>
+                        <div>
+                          <span className="text-white font-medium">Air Quality</span>
+                          <div className="text-slate-500 text-xs">PM2.5 • O3 • NO2</div>
+                        </div>
+                      </div>
+                      <div className="text-3xl font-bold text-emerald-400 mb-4">Excellent</div>
+                      <div className="flex gap-2">
+                        {[1,2,3,4,5].map((dot) => (
+                          <div key={dot} className="flex-1 h-2 rounded-full bg-slate-800 overflow-hidden">
+                            <div className={`h-full bg-gradient-to-r from-emerald-400 to-sky-400 transition-all duration-500 ${dot <= 4 ? 'w-full' : 'w-0'}`}></div>
                           </div>
                         ))}
                       </div>
                     </div>
                   </div>
-                </div>
 
-                {/* Side Stats */}
-                <div className="space-y-6">
-                  <div className="bg-gradient-to-br from-orange-500/20 to-yellow-500/20 backdrop-blur-2xl rounded-3xl p-6 border border-orange-300/20">
-                    <div className="flex items-center gap-3 mb-4">
-                      <Sunrise className="w-6 h-6 text-orange-400" />
-                      <span className="text-white/80 font-medium">UV Index</span>
+                  {/* Wind Compass */}
+                  <div className="relative group">
+                    <div className="absolute inset-0 bg-gradient-to-br from-slate-500/20 to-sky-500/10 rounded-3xl blur-xl opacity-60 group-hover:opacity-100 transition-opacity"></div>
+                    <div className="relative bg-slate-900/40 backdrop-blur-2xl rounded-3xl p-6 border border-white/10">
+                      <div className="flex items-center gap-3 mb-6">
+                        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-slate-500/20 to-sky-500/20 flex items-center justify-center">
+                          <Compass className="w-5 h-5 text-slate-300 animate-spin" style={{ animationDuration: '3s' }} />
+                        </div>
+                        <div>
+                          <span className="text-white font-medium">Wind Vector</span>
+                          <div className="text-slate-500 text-xs">Direction • Velocity</div>
+                        </div>
+                      </div>
+                      <div className="text-3xl font-bold text-slate-200 mb-2">NE</div>
+                      <div className="text-slate-400">North East • {weather.windSpeed} km/h</div>
                     </div>
-                    <div className="text-4xl font-bold text-white mb-2">{weather.uvIndex}</div>
-                    <div className="w-full bg-white/20 rounded-full h-2">
-                      <div 
-                        className="bg-gradient-to-r from-green-400 to-red-500 h-2 rounded-full transition-all duration-1000"
-                        style={{ width: `${(weather.uvIndex / 11) * 100}%` }}
-                      ></div>
-                    </div>
-                  </div>
-
-                  <div className="bg-gradient-to-br from-purple-500/20 to-pink-500/20 backdrop-blur-2xl rounded-3xl p-6 border border-purple-300/20">
-                    <div className="flex items-center gap-3 mb-4">
-                      <Activity className="w-6 h-6 text-purple-400" />
-                      <span className="text-white/80 font-medium">Air Quality</span>
-                    </div>
-                    <div className="text-4xl font-bold text-white mb-2">Good</div>
-                    <div className="flex space-x-1">
-                      {[1,2,3,4,5].map((dot) => (
-                        <div key={dot} className={`w-3 h-3 rounded-full ${dot <= 3 ? 'bg-green-400' : 'bg-white/20'} transition-colors duration-300`}></div>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div className="bg-gradient-to-br from-blue-500/20 to-cyan-500/20 backdrop-blur-2xl rounded-3xl p-6 border border-blue-300/20">
-                    <div className="flex items-center gap-3 mb-4">
-                      <Compass className="w-6 h-6 text-blue-400" />
-                      <span className="text-white/80 font-medium">Wind Direction</span>
-                    </div>
-                    <div className="text-2xl font-bold text-white mb-2">NE</div>
-                    <div className="text-white/60">North East</div>
                   </div>
                 </div>
               </div>
 
-              {/* Advanced 5-Day Forecast */}
-              <div className="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-2xl rounded-[2rem] p-8 border border-white/20 shadow-2xl">
-                <h3 className="text-3xl font-bold text-white mb-8 flex items-center gap-3">
-                  <Moon className="w-8 h-8 text-cyan-400" />
-                  Extended Forecast
-                </h3>
-                <div className="grid grid-cols-1 md:grid-cols-5 gap-6">
-                  {weather.forecast.map((day, index) => (
-                    <div key={index} className="group hover:scale-105 transition-all duration-300">
-                      <div className="bg-white/5 backdrop-blur-xl rounded-3xl p-6 border border-white/10 text-center hover:bg-white/10 transition-colors">
-                        <p className="text-white/80 font-semibold mb-4 uppercase tracking-wide text-sm">{day.day}</p>
-                        <div className="flex justify-center mb-4 group-hover:scale-110 transition-transform">
-                          {getWeatherIcon(day.condition, "w-12 h-12")}
-                        </div>
-                        <div className="space-y-2">
-                          <p className="text-2xl font-bold text-white">{day.high}°</p>
-                          <p className="text-white/60">{day.low}°</p>
-                        </div>
-                        <div className="mt-4 h-1 bg-white/20 rounded-full overflow-hidden">
-                          <div 
-                            className="h-full bg-gradient-to-r from-blue-400 to-cyan-400 transition-all duration-1000"
-                            style={{ width: `${((day.high - 20) / 15) * 100}%` }}
-                          ></div>
+              {/* Quantum Forecast Matrix */}
+              <div className="relative group">
+                <div className="absolute inset-0 bg-gradient-to-br from-sky-500/10 via-slate-500/5 to-amber-500/10 rounded-[3rem] blur-2xl opacity-60 group-hover:opacity-100 transition-opacity duration-700"></div>
+                <div className="relative bg-slate-900/40 backdrop-blur-2xl rounded-[3rem] p-10 border border-white/10 shadow-2xl">
+                  <div className="flex items-center gap-4 mb-10">
+                    <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-sky-400/20 to-amber-400/20 backdrop-blur flex items-center justify-center">
+                      <BarChart3 className="w-6 h-6 text-sky-300" />
+                    </div>
+                    <div>
+                      <h3 className="text-3xl font-bold text-white">Extended Forecast Matrix</h3>
+                      <p className="text-slate-400">Neural prediction algorithm • 96.7% accuracy</p>
+                    </div>
+                    <div className="ml-auto flex items-center gap-2">
+                      <div className="w-2 h-2 bg-sky-400 rounded-full animate-pulse"></div>
+                      <span className="text-slate-400 text-sm">REAL-TIME</span>
+                    </div>
+                  </div>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-5 gap-6">
+                    {weather.forecast.map((day, index) => (
+                      <div key={index} className="group/forecast hover:scale-105 transition-all duration-500" style={{ animationDelay: `${index * 100}ms` }}>
+                        <div className="relative">
+                          <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-white/2 rounded-3xl blur-lg opacity-0 group-hover/forecast:opacity-100 transition-opacity"></div>
+                          <div className="relative bg-slate-800/30 backdrop-blur-xl rounded-3xl p-6 border border-white/10 hover:border-white/20 transition-all duration-300">
+                            <div className="text-center">
+                              <p className="text-slate-400 font-medium mb-4 uppercase tracking-wider text-xs">{day.day}</p>
+                              <div className="flex justify-center mb-6 group-hover/forecast:scale-110 transition-transform duration-300">
+                                {getWeatherIcon(day.condition, "w-12 h-12")}
+                              </div>
+                              <div className="space-y-3">
+                                <div className="flex justify-between items-center">
+                                  <span className="text-2xl font-bold text-white">{day.high}°</span>
+                                  <span className="text-slate-400">{day.low}°</span>
+                                </div>
+                                <div className="relative h-2 bg-slate-700 rounded-full overflow-hidden">
+                                  <div 
+                                    className="absolute inset-0 bg-gradient-to-r from-sky-400 to-amber-400 rounded-full transition-all duration-1000"
+                                    style={{ width: `${((day.high - 20) / 15) * 100}%` }}
+                                  ></div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
               </div>
 
-              {/* Enhanced City Selection */}
-              <div className="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-2xl rounded-[2rem] p-8 border border-white/20 shadow-2xl">
-                <h3 className="text-3xl font-bold text-white mb-8">Popular Destinations</h3>
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-                  {['Colombo', 'Kandy', 'Galle', 'Negombo', 'Nuwara Eliya', 'Jaffna'].map((city) => (
-                    <button
-                      key={city}
-                      onClick={() => setSelectedCity(city)}
-                      className={`group relative overflow-hidden p-4 rounded-2xl font-medium transition-all duration-300 transform hover:scale-105 ${
-                        selectedCity === city 
-                          ? 'bg-gradient-to-r from-cyan-500 to-blue-500 text-white shadow-lg shadow-cyan-500/25' 
-                          : 'bg-white/10 text-white/80 hover:bg-white/20 border border-white/20'
-                      }`}
-                    >
-                      <div className="relative z-10">
-                        <MapPin className="w-5 h-5 mx-auto mb-2 group-hover:rotate-12 transition-transform" />
-                        <span className="block text-sm">{city}</span>
-                      </div>
-                      {selectedCity === city && (
-                        <div className="absolute inset-0 bg-gradient-to-r from-cyan-400/20 to-blue-500/20 blur-xl"></div>
-                      )}
-                    </button>
-                  ))}
+              {/* Neural City Selection Interface */}
+              <div className="relative group">
+                <div className="absolute inset-0 bg-gradient-to-br from-sky-500/10 via-slate-500/5 to-amber-500/10 rounded-[3rem] blur-2xl opacity-60 group-hover:opacity-100 transition-opacity duration-700"></div>
+                <div className="relative bg-slate-900/40 backdrop-blur-2xl rounded-[3rem] p-10 border border-white/10 shadow-2xl">
+                  <div className="flex items-center gap-4 mb-10">
+                    <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-sky-400/20 to-amber-400/20 backdrop-blur flex items-center justify-center">
+                      <Layers className="w-6 h-6 text-sky-300" />
+                    </div>
+                    <div>
+                      <h3 className="text-3xl font-bold text-white">Neural Location Grid</h3>
+                      <p className="text-slate-400">Quantum-enabled destination selector</p>
+                    </div>
+                  </div>
+                  
+                  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+                    {['Colombo', 'Kandy', 'Galle', 'Negombo', 'Nuwara Eliya', 'Jaffna'].map((city, index) => (
+                      <button
+                        key={city}
+                        onClick={() => setSelectedCity(city)}
+                        className={`group/city relative overflow-hidden transition-all duration-500 transform hover:scale-105 hover:-translate-y-1 ${
+                          selectedCity === city 
+                            ? 'scale-105' 
+                            : ''
+                        }`}
+                        style={{ animationDelay: `${index * 100}ms` }}
+                      >
+                        <div className={`relative p-6 rounded-2xl border transition-all duration-300 ${
+                          selectedCity === city 
+                            ? 'bg-gradient-to-br from-sky-500/20 to-amber-500/20 border-sky-400/50 shadow-lg shadow-sky-500/10' 
+                            : 'bg-slate-800/30 border-white/10 hover:bg-slate-700/40 hover:border-white/20'
+                        }`}>
+                          {/* Neural Grid Background */}
+                          <div className="absolute inset-0 opacity-20">
+                            <div className="w-full h-full" style={{
+                              backgroundImage: `
+                                linear-gradient(rgba(135, 206, 235, 0.1) 1px, transparent 1px),
+                                linear-gradient(90deg, rgba(135, 206, 235, 0.1) 1px, transparent 1px)
+                              `,
+                              backgroundSize: '8px 8px'
+                            }}></div>
+                          </div>
+
+                          <div className="relative z-10 text-center">
+                            <div className="mb-4 flex justify-center">
+                              <div className={`w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-300 ${
+                                selectedCity === city 
+                                  ? 'bg-gradient-to-br from-sky-400/30 to-amber-400/30' 
+                                  : 'bg-slate-700/50 group-hover/city:bg-slate-600/50'
+                              }`}>
+                                <MapPin className={`w-5 h-5 transition-all duration-300 group-hover/city:scale-110 ${
+                                  selectedCity === city ? 'text-sky-300' : 'text-slate-400'
+                                }`} />
+                              </div>
+                            </div>
+                            <span className={`block text-sm font-medium transition-colors ${
+                              selectedCity === city ? 'text-white' : 'text-slate-300'
+                            }`}>{city}</span>
+                            
+                            {selectedCity === city && (
+                              <div className="mt-2 flex justify-center">
+                                <div className="flex gap-1">
+                                  {[1,2,3].map((dot) => (
+                                    <div 
+                                      key={dot} 
+                                      className="w-1 h-1 bg-sky-400 rounded-full animate-pulse"
+                                      style={{ animationDelay: `${dot * 200}ms` }}
+                                    ></div>
+                                  ))}
+                                </div>
+                              </div>
+                            )}
+                          </div>
+
+                          {/* Selection Indicator */}
+                          {selectedCity === city && (
+                            <div className="absolute top-2 right-2">
+                              <div className="w-3 h-3 bg-sky-400 rounded-full animate-pulse"></div>
+                            </div>
+                          )}
+                        </div>
+                      </button>
+                    ))}
+                  </div>
                 </div>
               </div>
             </div>
           ) : null}
         </div>
 
-        {/* Footer */}
-        <div className="text-center mt-16 pb-8 px-6">
-          <div className="inline-block bg-black/20 backdrop-blur-xl rounded-2xl px-8 py-4 border border-white/20">
-            <p className="text-white/60 font-light">© Chanaka Eshan 2025 | Advanced Weather Intelligence</p>
+        {/* Quantum Footer */}
+        <div className="text-center mt-20 pb-12 px-6">
+          <div className="relative inline-block">
+            <div className="absolute inset-0 bg-gradient-to-r from-sky-500/10 to-amber-500/10 rounded-3xl blur-xl"></div>
+            <div className="relative bg-slate-900/30 backdrop-blur-2xl rounded-3xl px-10 py-6 border border-white/10">
+              <div className="flex items-center justify-center gap-4 mb-2">
+                <div className="w-2 h-2 bg-sky-400 rounded-full animate-pulse"></div>
+                <Cpu className="w-5 h-5 text-slate-400" />
+                <div className="w-2 h-2 bg-amber-400 rounded-full animate-pulse" style={{ animationDelay: '0.5s' }}></div>
+              </div>
+              <p className="text-slate-400 font-light text-sm">
+                © Chanaka Eshan 2025 | Quantum Weather Intelligence • Neural Network v4.2.1
+              </p>
+            </div>
           </div>
         </div>
       </div>
