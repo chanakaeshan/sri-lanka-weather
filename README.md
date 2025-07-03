@@ -57,7 +57,7 @@ src/
 ## Challenges
 
 - Handling API rate-limiting and downtime.
-- Ensuring localization for Sri Lankan users.
+- Ensuring localisation for Sri Lankan users.
 - Mapping weather data accurately to specific Sri Lankan locations.
 - Providing a fast and smooth user experience on mobile networks.
 
