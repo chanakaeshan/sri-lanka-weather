@@ -1,36 +1,77 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Sri Lanka Weather
+
+A modern web application for viewing real-time and forecast weather data tailored for Sri Lanka. Built primarily with TypeScript, this project aims to provide users with accurate, up-to-date weather information through an intuitive and responsive interface.
+
+## Features
+
+- **Current Weather:** View real-time weather conditions for cities and regions across Sri Lanka.
+- **Forecasts:** Access short-term and long-term weather forecasts.
+- **Search & Filter:** Quickly find weather data for specific locations.
+- **Responsive Design:** Works seamlessly on desktop and mobile devices.
+- **API Integration:** Fetches weather data from trusted third-party providers.
+
+## Technologies Used
+
+- **TypeScript:** Main programming language for type safety and maintainability.
+- **JavaScript:** For additional scripting needs.
+- **CSS:** Styling and responsive layout.
 
 ## Getting Started
 
-First, run the development server:
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/chanakaeshan/sri-lanka-weather.git
+   cd sri-lanka-weather
+   ```
+2. **Install dependencies:**
+   ```bash
+   npm install
+   ```
+3. **Run the development server:**
+   ```bash
+   npm start
+   ```
+4. **Open in your browser:**  
+   Visit `http://localhost:3000` (or as specified in your terminal) to view the app.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## Configuration
+
+- To fetch live weather data, you may need an API key from a weather provider such as [OpenWeatherMap](https://openweathermap.org/api).
+- Create a `.env` file in the project root and add your API key:
+  ```
+  REACT_APP_WEATHER_API_KEY=your_api_key_here
+  ```
+
+## Project Structure
+
+```
+src/
+  components/      # UI components
+  services/        # API service calls
+  utils/           # Utility functions and helpers
+  styles/          # CSS and style files
+  App.tsx          # Main application component
+  index.tsx        # Application entry point
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Challenges
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- Handling API rate-limiting and downtime.
+- Ensuring localization for Sri Lankan users.
+- Mapping weather data accurately to specific Sri Lankan locations.
+- Providing a fast and smooth user experience on mobile networks.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## References
 
-## Learn More
+- [OpenWeatherMap API](https://openweathermap.org/api)
+- [React Documentation](https://react.dev/)
+- [TypeScript Handbook](https://www.typescriptlang.org/docs/)
+- [Sri Lanka Department of Meteorology](http://www.meteo.gov.lk/)
 
-To learn more about Next.js, take a look at the following resources:
+## License
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+MIT License
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+*This project is maintained by [chanakaeshan](https://github.com/chanakaeshan). Contributions are welcome!*
