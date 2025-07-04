@@ -1,6 +1,6 @@
 # Sri Lanka Weather App 🌦️
 
-A modern web application for viewing real-time and forecast weather data tailored for Sri Lanka. Built primarily with TypeScript, this project aims to provide users with accurate, up-to-date weather information through an intuitive and responsive interface.
+A modern web application for viewing real-time and forecast weather data tailored for Sri Lanka. Built primarily with TypeScript, this project aims to provide users with accurate, up-to-date weather information through an intuitive and responsive interface
 
 ## Features
 
