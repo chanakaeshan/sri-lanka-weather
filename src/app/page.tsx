@@ -40,7 +40,12 @@ const WeatherApp = () => {
     'Colombo', 'Kandy', 'Galle', 'Jaffna', 'Negombo', 'Trincomalee', 
     'Batticaloa', 'Matara', 'Ratnapura', 'Badulla', 'Kurunegala', 
     'Anuradhapura', 'Polonnaruwa', 'Hambantota', 'Vavuniya', 'Mannar',
-    'Nuwara Eliya', 'Ella', 'Sigiriya', 'Bentota'
+    'Nuwara Eliya', 'Ella', 'Sigiriya', 'Bentota' , 'Kalutara', 'Puttalam',
+    'Gampaha', 'Kegalle', 'Mullaitivu', 'Kilinochchi', 'Ampara',
+    'Monaragala', 'Dambulla', 'Weligama', 'Hikkaduwa', 'Pasikudah',
+    'Arugam Bay', 'Beruwala', 'Tangalle', 'Ratnapura', 'Maharagama',
+    'Dehiwala', 'Moratuwa', 'Mount Lavinia', 'Boralesgamuwa', 'Nugegoda',
+    'Piliyandala', 'Maharagama', 'Homagama', 'Padukka', 'Avissawella', 
   ];
 
   useEffect(() => {
