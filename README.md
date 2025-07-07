@@ -34,6 +34,10 @@ A modern web application for viewing real-time and forecast weather data tailore
 4. **Open in your browser:**  
    Visit `http://localhost:3000` (or as specified in your terminal) to view the app.
 
+
+## ScreenShot
+
+
 ## Configuration
 
 - To fetch live weather data, you may need an API key from a weather provider such as [OpenWeatherMap](https://openweathermap.org/api).
