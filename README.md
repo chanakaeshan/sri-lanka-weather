@@ -39,6 +39,8 @@ A modern web application for viewing real-time and forecast weather data tailore
 
 ![HomePage](https://github.com/user-attachments/assets/4590a2f2-f130-441a-87bc-b6ba02f83067)
 
+![Search](https://github.com/user-attachments/assets/68c9cbf9-9760-453e-a909-cccea4bf1654)
+
 
 
 ## Configuration
